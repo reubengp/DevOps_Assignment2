@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aceest-fitness-deployment
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: aceest-fitness
+  template:
+    metadata:
+      labels:
+        app: aceest-fitness
+    spec:
+      containers:
+        - name: aceest-fitness-container
+          image: reuben001/aceest-fitness-gym:latest
+          ports:
+            - containerPort: 5001

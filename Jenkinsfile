@@ -4,8 +4,9 @@ pipeline {
     environment {
         IMAGE_NAME = "reuben001/aceest-fitness-gym"
         IMAGE_TAG = "${BUILD_NUMBER}"
+        DOCKER_DESKTOP_BIN = "/Applications/Docker.app/Contents/Resources/bin"
         DOCKER_BIN = "/usr/local/bin/docker"
-        PATH = "/usr/local/bin:/Applications/Docker.app/Contents/Resources/bin:/opt/homebrew/bin:${env.PATH}"
+        PATH = "${DOCKER_DESKTOP_BIN}:/usr/local/bin:/opt/homebrew/bin:${env.PATH}"
     }
 
     stages {

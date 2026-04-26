@@ -169,6 +169,8 @@ minikube service aceest-fitness-service
 
 This project uses **Rolling Update**.
 
+Rollback to the last stable version is supported through Kubernetes rollout history. If a deployment fails or the new version is unstable, the application can be reverted to the previous working release.
+
 Reason:
 
 - It is simple
@@ -187,6 +189,14 @@ Rollback command:
 
 ```bash
 kubectl rollout undo deployment/aceest-fitness-deployment
+```
+
+Useful rollback verification commands:
+
+```bash
+kubectl rollout status deployment/aceest-fitness-deployment
+kubectl rollout history deployment/aceest-fitness-deployment
+kubectl get pods
 ```
 
 Other deployment methods like Blue-Green, Canary, Shadow, and A/B Testing are only mentioned for reference in this project.

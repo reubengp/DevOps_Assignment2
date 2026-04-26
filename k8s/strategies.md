@@ -5,26 +5,27 @@
 - Kubernetes replaces old pods with new pods gradually.
 - This gives simple updates with low downtime.
 - In this project, the deployment uses `strategy: type: RollingUpdate`.
+- The old version is not removed all at once.
+- Kubernetes starts a new pod first, checks that it is running correctly, and then removes an old pod.
+- This process continues until all old pods are replaced by new pods.
+- Because the pods are updated one by one, the application stays available during deployment.
+- If the new version has a problem, rollback can be done using:
+
+```bash
+kubectl rollout undo deployment/aceest-fitness-deployment
+```
 
 Used file:
 - `k8s/deployment.yaml`
 
 ## 2. Blue-Green Deployment
-- Keep two versions: blue and green.
-- One version handles live traffic, the other is the new version.
-- After testing green, switch the service from blue to green.
+- Mentioned for reference only.
 
 ## 3. Canary Deployment
-- Send a small amount of traffic to the new version first.
-- Example: run 1 pod of new version and 3 pods of old version.
-- If stable, increase new version replicas.
+- Mentioned for reference only.
 
 ## 4. Shadow Deployment
-- New version receives a copy of real traffic, but users still see old version response.
-- Used for testing performance and logs without affecting users.
-- In local projects, this is mostly shown as a concept and architecture idea.
+- Mentioned for reference only.
 
 ## 5. A/B Testing
-- Users are split into different versions based on rule or header.
-- Example: version A for normal users, version B for trial users.
-- Usually handled by ingress, API gateway, or application logic.
+- Mentioned for reference only.

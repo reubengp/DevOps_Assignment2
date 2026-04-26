@@ -1,11 +1,20 @@
-# ACEest Fitness & Gym CI/CD Project
+# ACEfest Fitness & Gym CI/CD Project
 
-This is a simple Flask-based DevOps project for a college-level CI/CD assignment. It includes a Flask app, pytest, Docker, Jenkins, SonarQube, and Kubernetes files for local deployment.
+## Introduction
 
-## 1. Project Folder Structure
+This project was done for a DevOps CI/CD assignment. The application is a simple Flask-based fitness app called **ACEfest Fitness & Gym**. The main aim of the project is to show how a small application can go through testing, code quality check, Docker build, Jenkins pipeline, and Kubernetes deployment.
+
+The app has the following routes:
+
+- `/`
+- `/workouts`
+- `/members`
+- `/plans`
+
+## Project Structure
 
 ```text
-ACEest-Fitness-Gym/
+ACEfest/
 |-- app/
 |   |-- __init__.py
 |   |-- data.py
@@ -17,31 +26,32 @@ ACEest-Fitness-Gym/
 |-- tests/
 |   `-- test_routes.py
 |-- .dockerignore
+|-- .gitignore
 |-- app.py
 |-- Dockerfile
 |-- Jenkinsfile
+|-- pytest.ini
 |-- README.md
 |-- report.md
 |-- requirements.txt
 `-- sonar-project.properties
 ```
 
-## 2. Minimal Setup
+## Tools Used
 
-Install these tools first:
-
-- Python 3.11+
-- Git
-- Docker Desktop
-- Java 17 or Java 21 for Jenkins
+- Python
+- Flask
+- Pytest
+- Git and GitHub
+- Docker
 - Jenkins
 - SonarQube
+- Kubernetes
 - Minikube
-- kubectl
 
-## 3. Flask Application Setup
+## How to Run the Flask App
 
-Create virtual environment and install dependencies:
+Create virtual environment:
 
 ```bash
 python3 -m venv venv
@@ -49,189 +59,220 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Run the application:
+Run the app:
 
 ```bash
 python app.py
 ```
 
-Open:
+Open these in browser:
 
 - `http://127.0.0.1:5001/`
 - `http://127.0.0.1:5001/workouts`
 - `http://127.0.0.1:5001/members`
 - `http://127.0.0.1:5001/plans`
 
-## 4. Run Unit Tests
+## How to Run Tests
 
 ```bash
 pytest tests -v
 ```
 
-## 5. Docker Commands
+This project has simple unit tests for all routes.
 
-Build image:
+## Docker Setup
 
-```bash
-docker build -t aceest-fitness-gym .
-```
-
-Run container:
+Build Docker image:
 
 ```bash
-docker run -d -p 5001:5001 --name aceest-app aceest-fitness-gym
+docker build -t reuben001/aceest-fitness-gym:latest .
 ```
 
-Check in browser:
+Run Docker container:
+
+```bash
+docker run -d -p 5001:5001 --name aceest-app reuben001/aceest-fitness-gym:latest
+```
+
+Then open:
 
 ```text
 http://localhost:5001/
 ```
 
-## 6. Jenkins Pipeline Steps
+## Jenkins Pipeline
 
-The Jenkins pipeline does:
+The Jenkins pipeline file is in `Jenkinsfile`.
 
-1. Checkout code from GitHub
-2. Install Python dependencies
-3. Run pytest
-4. Run SonarQube scan
-5. Build Docker image
-6. Push Docker image to Docker Hub
+The pipeline stages are:
 
-Before running Jenkins pipeline:
+1. Checkout
+2. Install Dependencies
+3. Run Tests
+4. SonarQube Scan
+5. Build Docker Image
+6. Push to Docker Hub
 
-- Install Docker in the Jenkins machine
-- Install SonarQube Scanner plugin
-- Add Docker Hub credentials in Jenkins as `dockerhub-creds`
-- Add SonarQube server in Jenkins as `sonarqube-server`
-- Replace the Docker image name only if you want something different from `reuben001/aceest-fitness-gym`
+Important Jenkins setup used in this project:
 
-## 7. SonarQube Setup
+- SonarQube server name: `sonarqube-server`
+- Docker credentials ID: `dockerhub-creds`
+- Sonar scanner tool name: `sonar-scanner`
 
-1. Start SonarQube locally.
-2. Create a project in SonarQube.
-3. Keep the project key same as in `sonar-project.properties`.
-4. In Jenkins, configure SonarQube server name as `sonarqube-server`.
-5. Run the Jenkins pipeline.
+## SonarQube
 
-## 8. Kubernetes Local Deployment
+SonarQube is used in this project for static code analysis.
 
-Start minikube:
+In this setup, SonarQube runs locally in Docker at:
+
+```text
+http://localhost:9000
+```
+
+The project key used is:
+
+```text
+aceest-fitness-gym
+```
+
+## Kubernetes Deployment
+
+This project is deployed locally using Minikube.
+
+Start Minikube:
 
 ```bash
 minikube start
 ```
 
-Apply files:
+Apply Kubernetes files:
 
 ```bash
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f k8s/service.yaml
 ```
 
-Check resources:
+Check pods and services:
 
 ```bash
 kubectl get pods
 kubectl get services
 ```
 
-Open service:
+Open the service:
 
 ```bash
 minikube service aceest-fitness-service
 ```
 
-## 9. GitHub Version Control Strategy
+## Deployment Strategy Used
 
-Suggested branches:
+This project uses **Rolling Update**.
 
-- `main` for stable code
-- `dev` for integration
+Reason:
+
+- It is simple
+- It is supported by Kubernetes by default
+- It updates pods one by one
+- It helps reduce downtime
+
+How it works here:
+
+- 2 replicas are used in deployment
+- when a new version is applied, Kubernetes starts a new pod first
+- after that, one old pod is removed
+- this continues until all pods are updated
+
+Rollback command:
+
+```bash
+kubectl rollout undo deployment/aceest-fitness-deployment
+```
+
+Other deployment methods like Blue-Green, Canary, Shadow, and A/B Testing are only mentioned for reference in this project.
+
+## GitHub Version Control
+
+This project is maintained using Git and GitHub.
+
+Suggested branch names:
+
+- `main`
 - `feature/flask-app`
 - `feature/tests`
 - `feature/docker-setup`
 - `feature/jenkins-pipeline`
-- `feature/k8s-deployment`
 
-Suggested commit style:
+Example commit messages:
 
-- `feat: add modular Flask routes`
-- `test: add pytest cases for all endpoints`
-- `build: add Dockerfile for Flask app`
-- `ci: add Jenkins pipeline stages`
-- `docs: add project report and setup guide`
+- `feat: add Flask routes`
+- `test: add route test cases`
+- `build: add Dockerfile`
+- `ci: add Jenkins pipeline`
+- `docs: update README and report`
 
-Suggested tags:
-
-- `v1.0.0` for first complete version
-- `v1.1.0` after improvements
-
-## 10. CI/CD Flow
+Example tag:
 
 ```text
-GitHub -> Jenkins -> Pytest -> SonarQube -> Docker Build -> Docker Hub -> Kubernetes Rolling Update Deployment
+v1.0.0
 ```
 
-Simple flow:
+## CI/CD Flow
 
-- Developer pushes code to GitHub
-- Jenkins pulls latest code
+```text
+GitHub -> Jenkins -> Pytest -> SonarQube -> Docker -> Docker Hub -> Kubernetes
+```
+
+Simple explanation:
+
+- code is pushed to GitHub
+- Jenkins pulls the latest code
 - Jenkins installs dependencies
 - Jenkins runs tests
-- Jenkins checks code quality with SonarQube
+- Jenkins runs SonarQube scan
 - Jenkins builds Docker image
 - Jenkins pushes image to Docker Hub
-- Kubernetes pulls image and runs app
+- Kubernetes pulls the image and runs the app
 
-## 11. Common Errors and Fixes
+## Common Errors
 
 ### Port already in use
 
-Error:
+If port `5001` is busy:
 
-```text
-Address already in use
+- stop the old process
+- or run Docker on another host port
+
+Example:
+
+```bash
+docker run -d -p 5002:5001 --name aceest-app reuben001/aceest-fitness-gym:latest
 ```
 
-Fix:
+### Docker push failed in Jenkins
 
-- Stop old app/container using the port
-- Or run another port like `docker run -p 5002:5001 ...`
+Check:
 
-### Docker image not found
+- Docker Hub token
+- Jenkins credential ID
+- Docker username
 
-Fix:
+### SonarQube not opening
 
-- Check image name carefully
-- Build image again
-- Make sure Docker Desktop is running
+Make sure SonarQube container is running:
 
-### Jenkins pipeline fails at Docker push
-
-Fix:
-
-- Check Docker Hub username
-- Check Jenkins credentials id
-- Run `docker login` once manually for testing
+```bash
+docker start sonarqube
+```
 
 ### Kubernetes image pull error
 
-Fix:
+Check:
 
-- Push image to Docker Hub first
-- Make sure image name in deployment file is correct
-- Use public image or configure secret for private image
+- image name is correct
+- image is pushed to Docker Hub
+- deployment file uses the correct image
 
-### SonarQube scan fails
+## Final Note
 
-Fix:
-
-- Make sure SonarQube server is running
-- Check project key
-- Check scanner setup in Jenkins
-
-## 12. Important Note
-
-This project is made simple on purpose so it is easy to understand, run, and submit.
+This project was kept simple on purpose so it is easy to understand, run, and present for an academic assignment.

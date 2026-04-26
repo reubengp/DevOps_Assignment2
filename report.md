@@ -140,12 +140,12 @@ This setup is enough for a local demo deployment.
 Different deployment strategies were also studied in this project:
 
 - **Rolling Update**: gradually replace old pods with new pods
-- **Blue-Green**: maintain two environments and switch traffic after testing
-- **Canary**: send small traffic to new version before full release
-- **Shadow**: mirror traffic to new version without affecting users
-- **A/B Testing**: split users between versions based on defined rules
+- **Blue-Green**
+- **Canary**
+- **Shadow**
+- **A/B Testing**
 
-For this assignment, Rolling Update is the main deployment method used in the Kubernetes files, and the other strategies are explained at a basic level in `k8s/strategies.md`.
+For this assignment, Rolling Update is the main deployment method used in the Kubernetes files. The other strategies are only mentioned briefly for reference.
 
 ## CI/CD Flow Explanation
 

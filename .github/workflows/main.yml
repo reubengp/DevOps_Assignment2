@@ -23,7 +23,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Build and lint
-        run: python -m py_compile app.py test_app.py
+        run: python -m py_compile app.py tests/test_routes.py
 
       - name: Run tests
         run: pytest

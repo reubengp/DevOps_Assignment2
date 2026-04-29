@@ -4,7 +4,7 @@
 
 This project was done for a DevOps CI/CD assignment. The application is a simple Flask-based fitness app called **ACEfest Fitness & Gym**. The main aim of the project is to show how a small application can go through testing, code quality check, Docker build, Jenkins pipeline, and Kubernetes deployment.
 
-For submission alignment, the project includes `ACEest_Fitness.py` as the assignment-named Flask entry point and `VERSION_HISTORY.md` to summarize incremental versions of the same code base.
+The project uses `ACEest_Fitness.py` as the Flask entry point for submission and execution.
 
 The app has the following routes:
 
@@ -30,8 +30,6 @@ ACEfest/
 |-- .dockerignore
 |-- .gitignore
 |-- ACEest_Fitness.py
-|-- VERSION_HISTORY.md
-|-- app.py
 |-- Dockerfile
 |-- Jenkinsfile
 |-- pytest.ini
@@ -64,12 +62,6 @@ pip install -r requirements.txt
 ```
 
 Run the app:
-
-```bash
-python app.py
-```
-
-Or run the assignment-named entry point:
 
 ```bash
 python ACEest_Fitness.py

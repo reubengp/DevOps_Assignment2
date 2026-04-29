@@ -44,7 +44,7 @@ The Flask application was developed in a modular format. Instead of writing all 
 - `app/__init__.py` creates the Flask app
 - `app/routes.py` contains route definitions
 - `app/data.py` stores simple sample data
-- `app.py` is the main runner file
+- `ACEest_Fitness.py` is the main runner file
 
 This structure makes the project cleaner and easier to maintain. The routes return JSON responses so the app is easy to test and use in Docker or Kubernetes.
 
